@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Электронная визитка</title><meta name="robots" content="noindex"><script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script><style id="css">
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#e9e9eb;--panel:#fff;--ink:#0b0b0c;--mute:#8a8a90;--line:#d4d4d8;--blue:#1a6dff;--field:#f6f6f7}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141416;--panel:#1f1f22;--ink:#f2f2f3;--mute:#9a9aa0;--line:#38383d;--field:#17171a}}
+:root[data-theme="dark"]{--bg:#141416;--panel:#1f1f22;--ink:#f2f2f3;--mute:#9a9aa0;--line:#38383d;--field:#17171a}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.4 "Inter","Helvetica Neue",Arial,sans-serif}
+.wrap{max-width:480px;margin:0 auto;padding:16px}
+h2{font-size:18px;margin:0 0 12px}
+.panel{background:var(--panel);border-radius:20px;padding:18px;margin-bottom:16px}
+label{display:block;font-size:12px;color:var(--mute);margin:10px 0 4px}
+input{width:100%;padding:11px 12px;border:1px solid var(--line);border-radius:10px;background:var(--field);color:var(--ink);font:inherit}
+input:focus-visible,button:focus-visible,select:focus-visible,a:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.btn{border:0;border-radius:12px;padding:13px 14px;font:inherit;font-weight:600;cursor:pointer;background:#000;color:#fff;width:100%}
+.btn.blue{background:var(--blue)}
+.btn.ghost{background:transparent;color:var(--ink);border:1px solid var(--line)}
+.row{display:flex;gap:8px;margin-top:14px}
+.hint{font-size:13px;color:var(--mute);margin:8px 0 0}
+.out{word-break:break-all;font-size:13px;background:var(--field);border:1px solid var(--line);border-radius:10px;padding:10px}
+.cf{border:1px solid var(--line);border-radius:12px;padding:10px;margin-top:10px;background:var(--field)}
+.cf input{margin-top:6px;background:var(--panel)}
+.cf .rm{background:transparent;border:0;color:var(--mute);cursor:pointer;float:right;font:inherit;padding:0}
+.card{background:#f0f0f1;color:#0b0b0c;border-radius:28px;overflow:hidden}
+.top{background:linear-gradient(115deg,#e4e4e6 0%,#fafafa 38%,#cfcfd2 62%,#f2f2f3 100%);padding:14px 10px 12px}
+.bar{display:flex;justify-content:center;align-items:center}
+.bar select{appearance:none;background:#1c1c1e;color:#fff;border:0;border-radius:10px;padding:8px 14px;font:600 14px inherit;cursor:pointer}
+.who{display:flex;gap:18px;margin:14px 0 18px;align-items:flex-start}
+.ava{width:116px;height:116px;border-radius:50%;background:#000;color:#fff;display:grid;place-items:center;font-size:44px;font-weight:700;flex:none}
+.who b{font-size:19px;margin-top:6px;word-break:break-word}
+.cb{display:flex;gap:10px;margin-bottom:10px}
+.cb .btn{border-radius:12px;height:56px}
+.qrb{width:66px;flex:none;padding:0}
+.soc{display:flex;gap:10px}
+.soc a{flex:1;background:#fff;border-radius:12px;height:54px;display:flex;align-items:center;justify-content:center;gap:8px;color:#0b0b0c;text-decoration:none;font-weight:600;font-size:15px}
+.dot{width:16px;height:16px;border-radius:50%;background:#2a9df4;display:inline-block}
+.dot.vk{border-radius:4px;background:#0077ff}
+.body{padding:26px 10px 20px}
+.body h3{font-size:21px;margin:0 0 10px}
+.body h3:not(:first-child){margin-top:26px}
+.f{margin-bottom:14px}
+.f small{display:block;font-size:12px;color:#a5a5aa}
+.f a,.f span{color:#0b0b0c;text-decoration:none;font-size:17px;word-break:break-word}
+.web{display:inline-flex;align-items:center;gap:10px;border:1.5px solid #3a3a3c;border-radius:12px;padding:14px 18px;color:#0b0b0c;text-decoration:none;font-weight:600;margin:6px 0 30px}
+.card .share{border-radius:12px;height:56px;margin-top:4px}
+.card{position:relative;overflow:hidden;color:#fff;background:linear-gradient(160deg,#061330 0%,#0c2760 52%,#1240a0 100%);border:1px solid rgba(255,255,255,.2);box-shadow:0 24px 60px rgba(5,15,45,.45)}
+.card::before,.card::after{content:"";position:absolute;border-radius:50%;filter:blur(60px);pointer-events:none;z-index:0}
+.card::before{width:260px;height:260px;left:-90px;top:-70px;background:rgba(255,255,255,.6)}
+.card::after{width:320px;height:320px;right:-130px;top:330px;background:rgba(40,110,255,.75)}
+.top,.body{position:relative;z-index:1;background:transparent}
+.top{padding:16px 14px 6px}
+.body{padding:14px 14px 20px}
+.glass,.bar select,.ava,.cb .btn,.soc a,.web,.card .share{background:linear-gradient(135deg,rgba(255,255,255,.3),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.42);box-shadow:inset 0 1px 0 rgba(255,255,255,.7),inset 0 -1px 0 rgba(255,255,255,.08),0 10px 28px rgba(3,10,35,.3);-webkit-backdrop-filter:blur(22px) saturate(170%);backdrop-filter:blur(22px) saturate(170%);color:#fff}
+.cb .btn.blue{background:linear-gradient(135deg,rgba(70,150,255,.95),rgba(20,80,230,.85));border-color:rgba(255,255,255,.55)}
+.ava{background:linear-gradient(135deg,rgba(255,255,255,.55),rgba(255,255,255,.12))}
+.bar select{border-radius:12px}
+.who b{color:#fff;text-shadow:0 1px 10px rgba(0,0,0,.3)}
+.sec{border-radius:22px;padding:16px 16px 4px;margin-bottom:14px}
+.body h3,.body h3:not(:first-child){color:#fff;margin:0 0 12px;font-size:20px}
+.f small{color:#bccaea}
+.f a,.f span{color:#fff}
+.web{margin:0 0 14px;color:#fff}
+.soc a{color:#fff}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:20}
+.modal.on{display:flex}
+.mbox{background:#fff;color:#0b0b0c;border-radius:20px;padding:20px;max-width:340px;width:100%;text-align:center}
+.mbox svg{width:100%;height:auto}
+.mbox pre{text-align:left;white-space:pre-wrap;word-break:break-all;font-size:12px;background:#f0f0f1;padding:10px;border-radius:10px;max-height:180px;overflow:auto}
+.mbox .btn{margin-top:12px}
+</style></head><body><div id="root"></div><script type="application/json" id="data">{"n":"Vladimir","p":"+375447548955","c":"НФСИН","t":"CEO","wp":"1337228","we":"baguchunuswork@gmail.com","w":"","tg":"@vovkanando","vk":"","ol":"","ob":"","x":[["Instagram","vovkanando","instagram.com/vovkanando"]]}</script><script id="app">
+var QR="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js";
+var F=[["n","Имя","Александр"],["p","Телефон","+7 (999) 000-00-00"],["c","Компания","НФСИ"],["t","Должность","CEO"],["wp","Рабочий телефон","+7 (999) 000-00-00"],["we","Рабочая почта","mail@nfsea.ru"],["w","Сайт","https://nfsea.ru"],["tg","Telegram (@ник)","@nick"],["vk","VK (ссылка или id)","id1"],["ol","Ссылка для синей кнопки","https://nfsea.ru/order"],["ob","Текст синей кнопки","Заказать визитки"]];
+var T={ru:{c:"Контакты",wc:"Рабочие контакты",p:"Телефон",co:"Компания",ti:"Должность",wp:"Рабочий телефон",we:"Рабочая почта",ex:"Дополнительно",sv:"Сохранить в контакты",sh:"Поделиться",ok:"Скопировано",cl:"Закрыть",vc:"Скопируйте данные и вставьте в новый контакт:",lk:"Ссылка на визитку:",cp:"Скопировать"},
+en:{c:"Contacts",wc:"Work contacts",p:"Phone",co:"Company",ti:"Position",wp:"Work phone",we:"Work email",ex:"More",sv:"Save to contacts",sh:"Share",ok:"Copied",cl:"Close",vc:"Copy the details and paste into a new contact:",lk:"Card link:",cp:"Copy"}};
+var SHELL='<div class="wrap"><div id="bar" class="panel" style="display:none"><button class="btn blue" id="eb">Редактировать визитку</button></div>'
++'<div id="editor" style="display:none"><div class="panel"><h2>Редактор визитки</h2><p class="hint" style="margin:0">Заполните поля ниже и нажмите «Скачать готовый файл». Загрузите скачанный файл index.html на Netlify или GitHub Pages: адрес этого сайта и есть ваша визитка, его можно записать на NFC-метку.</p></div><div class="panel"><h2>Ваша визитка</h2><div id="fields"></div><h2 style="margin-top:22px;font-size:16px">Свои поля и ссылки</h2><div id="cfs"></div>'
++'<button class="btn ghost" id="addf" type="button" style="margin-top:10px">+ Добавить поле</button>'
++'<div class="row"><button class="btn blue" id="pub" type="button">Скачать готовый файл</button><button class="btn ghost" id="cancel" type="button">Смотреть визитку</button></div><p class="hint" id="st"></p></div>'
++'<h2 style="margin:6px 4px 10px">Предпросмотр</h2></div><div id="card" class="card"></div></div>'
++'<div class="modal" id="m"><div class="mbox" id="mb"></div></div>';
+var lang="ru",cur,pub=null,$=function(i){return document.getElementById(i)};
+function esc(s){var d=document.createElement("div");d.textContent=s==null?"":s;return d.innerHTML.replace(/"/g,"&quot;")}
+function bl(h){return/^https?:/i.test(h)?' target="_blank" rel="noopener"':""}
+function tl(v){return"tel:"+(v||"").replace(/[^+\d]/g,"")}
+function url(v,pre){v=(v||"").trim();if(!v)return"";return/^https?:\/\//i.test(v)?v:pre+v.replace(/^@/,"")}
+function modal(h){$("mb").innerHTML=h+'<button class="btn" id="mx">'+T[lang].cl+'</button>';$("m").classList.add("on");$("mx").onclick=function(){$("m").classList.remove("on")}}
+function showQR(u){try{var q=qrcode(0,"M");q.addData(u);q.make();modal(q.createSvgTag({cellSize:4,margin:2,scalable:true}))}catch(e){modal("<p>Не удалось построить QR-код.</p>")}}
+function copy(txt,btn){function ok(){if(btn){var o=btn.textContent;btn.textContent=T[lang].ok;setTimeout(function(){btn.textContent=o},1400)}}
+  function fb(){var a=document.createElement("textarea");a.value=txt;document.body.appendChild(a);a.select();try{document.execCommand("copy");ok()}catch(e){}a.remove()}
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(ok,fb)}else fb()}
+function share(u){var f=function(){modal('<p class="hint">'+T[lang].lk+'</p><pre>'+esc(u)+'</pre><button class="btn blue" id="vc">'+T[lang].cp+'</button>');$("vc").onclick=function(){copy(u,this)}};
+  if(navigator.share){navigator.share({url:u}).catch(function(e){if(!e||e.name!=="AbortError")f()})}else f()}
+function vcf(d){var L=["BEGIN:VCARD","VERSION:3.0","FN:"+d.n,"N:;"+d.n+";;;"];
+  if(d.p)L.push("TEL;TYPE=CELL:"+d.p);if(d.wp)L.push("TEL;TYPE=WORK:"+d.wp);if(d.we)L.push("EMAIL;TYPE=WORK:"+d.we);
+  if(d.c)L.push("ORG:"+d.c);if(d.t)L.push("TITLE:"+d.t);if(d.w)L.push("URL:"+url(d.w,"https://"));var g=url(d.tg,"https://t.me/");if(g)L.push("URL:"+g);(d.x||[]).forEach(function(r){var l=(r[2]||"").trim();if(/^https?:\/\//i.test(l)||/^[\w-]+(\.[\w-]+)+\//.test(l))L.push("URL:"+url(l,"https://"))});L.push("END:VCARD");return L.join("\r\n")}
+function dlFile(n,t,x){var u=URL.createObjectURL(new Blob([x],{type:t})),a=document.createElement("a");a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u)},4000)}
+function saveVcf(d){var s=vcf(d),ua=navigator.userAgent,ios=/iP(hone|ad|od)/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1),fn=(d.n||"contact").replace(/[^\w\u0400-\u04FF-]+/g,"_")+".vcf";
+  function manual(){modal('<p class="hint">'+T[lang].vc+'</p><pre>'+esc(s)+'</pre><button class="btn blue" id="vc">'+T[lang].cp+'</button>');$("vc").onclick=function(){copy(s,this)}}
+  if(/Android/i.test(ua)){var e=encodeURIComponent,ph=[d.p,d.wp].map(function(v){return(v||"").replace(/[^+\d]/g,"")}).filter(Boolean);
+    location.href="intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name="+e(d.n||"")+";S.phone="+e(ph[0]||"")+(ph[1]?";S.secondary_phone="+e(ph[1]):"")+";S.email="+e((d.we||"").trim())+";S.company="+e(d.c||"")+";S.job_title="+e(d.t||"")+";end";
+    setTimeout(function(){if(!document.hidden){try{dlFile(fn,"text/vcard;charset=utf-8",s)}catch(x){}manual()}},1800);return}
+  if(ios){try{location.href=URL.createObjectURL(new Blob([s],{type:"text/vcard;charset=utf-8"}));return}catch(x){}manual();return}
+  try{dlFile(fn,"text/vcard;charset=utf-8",s)}catch(x){}
+  manual()}
+function tfb(h,txt){var ru=lang==="ru",tel=h.indexOf("tel:")===0;modal('<p class="hint">'+(ru?"Телефон не открыл приложение автоматически. Нажмите кнопку ниже или скопируйте:":"The app did not open automatically. Tap the button below or copy:")+'</p><pre>'+esc(txt)+'</pre><a class="btn blue" style="display:block;text-decoration:none" href="'+esc(h)+'">'+(tel?(ru?"Позвонить":"Call"):(ru?"Написать письмо":"Write email"))+'</a><button class="btn ghost" style="color:#0b0b0c" id="vc">'+T[lang].cp+'</button>');$("vc").onclick=function(){copy(txt,this)}}
+function vinfo(d){var s=vcf(d),ua=navigator.userAgent,e=encodeURIComponent,ios=/iP(hone|ad|od)/.test(ua)||(navigator.platform==="MacIntel"&&navigator.maxTouchPoints>1);
+  if(/Android/i.test(ua)){var ph=[d.p,d.wp].map(function(v){return(v||"").replace(/[^+\d]/g,"")}).filter(Boolean);
+    return{h:"intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name="+e(d.n||"")+";S.phone="+e(ph[0]||"")+(ph[1]?";S.secondary_phone="+e(ph[1]):"")+";S.email="+e((d.we||"").trim())+";S.company="+e(d.c||"")+";S.job_title="+e(d.t||"")+";end",a:""}}
+  if(ios){var q={n:d.n,p:d.p,c:d.c,t:d.t,wp:d.wp,we:d.we,w:d.w,tg:d.tg,x:d.x};
+    return{h:"/vcard.vcf?d="+btoa(unescape(e(JSON.stringify(q)))).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,""),a:""}}
+  return{h:"data:text/vcard;charset=utf-8,"+e(s),a:' download="'+esc((d.n||"contact").replace(/[^\w\u0400-\u04FF-]+/g,"_"))+'.vcf"'}}
+function render(d){
+  var t=T[lang],h="",vi=vinfo(d);
+  var tg=url(d.tg,"https://t.me/"),vk=url(d.vk,"https://vk.com/"),web=url(d.w,"https://"),ol=url(d.ol,"https://");
+  function fld(l,v,href){return v?'<div class="f"><small>'+esc(l)+'</small>'+(href?'<a href="'+esc(href)+'"'+bl(href)+'>'+esc(v)+'</a>':'<span>'+esc(v)+'</span>')+'</div>':""}
+  var ini=(d.n||"?").trim().charAt(0).toUpperCase();
+  h+='<div class="top"><div class="bar"><select id="lg" aria-label="Language"><option value="ru">RU</option><option value="en">EN</option></select></div>';
+  h+='<div class="who"><div class="ava">'+esc(ini)+'</div><b>'+esc(d.n)+'</b></div>';
+  h+='<div class="cb"><a class="btn" id="sv" style="display:grid;place-items:center;text-decoration:none" href="'+esc(vi.h)+'"'+vi.a+'>'+t.sv+'</a><button class="btn qrb" id="qb" aria-label="QR"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v7M14 20h3"/></svg></button></div>';
+  if(ol)h+='<div class="cb"><a class="btn blue" style="display:grid;place-items:center;text-decoration:none;height:56px" href="'+esc(ol)+'"'+bl(ol)+'>'+esc(d.ob||"Заказать визитки")+'</a></div>';
+  if(tg||vk){h+='<div class="soc">';if(tg)h+='<a href="'+esc(tg)+'"'+bl(tg)+'><i class="dot"></i>Telegram</a>';if(vk)h+='<a href="'+esc(vk)+'"'+bl(vk)+'><i class="dot vk"></i>VK</a>';h+='</div>'}
+  h+='</div><div class="body">';
+  if(d.p)h+='<div class="sec glass"><h3>'+t.c+'</h3>'+fld(t.p,d.p,tl(d.p))+'</div>';
+  if(d.c||d.t||d.wp||d.we)h+='<div class="sec glass"><h3>'+t.wc+'</h3>'+fld(t.co,d.c)+fld(t.ti,d.t)+fld(t.wp,d.wp,d.wp?tl(d.wp):"")+fld(t.we,d.we,d.we?"mailto:"+d.we.trim():"")+'</div>';
+  if(d.x&&d.x.length){h+='<div class="sec glass"><h3>'+t.ex+'</h3>';d.x.forEach(function(r){var l=r[2]||"",hr=l?(/^(https?:|tel:|mailto:)/i.test(l)?l:(/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(l)?"mailto:"+l:"https://"+l)):"";h+=fld(r[0],r[1]||l,hr)});h+='</div>'}
+  if(web)h+='<a class="web" href="'+esc(web)+'"'+bl(web)+'><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c3 3 3 17 0 20M12 2c-3 3-3 17 0 20"/></svg>'+esc(web.replace(/^https?:\/\//,"").replace(/\/$/,""))+'</a><br>';
+  h+='<button class="btn share" id="sh">'+t.sh+'</button></div>';
+  $("card").innerHTML=h;$("lg").value=lang;
+  $("lg").onchange=function(){lang=this.value;render(d)};
+  $("sh").onclick=function(){share(location.href.split("#")[0])};
+  $("qb").onclick=function(){showQR(location.href.split("#")[0])};
+}
+function collect(){var o={};F.forEach(function(f){o[f[0]]=$("f_"+f[0]).value.trim()});if(!o.n)o.n="Имя";o.x=[];
+  document.querySelectorAll(".cf").forEach(function(e){var i=e.querySelectorAll("input"),a=i[0].value.trim(),b=i[1].value.trim(),c=i[2].value.trim();if(a||b||c)o.x.push([a,b,c])});return o}
+function upd(){render(collect())}
+function addRow(r){var d=document.createElement("div");d.className="cf";
+  d.innerHTML='<button class="rm" type="button">Удалить</button><input placeholder="Название (например, Instagram)" value="'+esc(r[0])+'"><input placeholder="Текст (например, @nick)" value="'+esc(r[1])+'"><input placeholder="Ссылка (необязательно)" value="'+esc(r[2])+'">';
+  d.querySelector(".rm").onclick=function(){d.remove();upd()};$("cfs").appendChild(d)}
+function buildForm(){var h="";
+  F.forEach(function(f){h+='<label for="f_'+f[0]+'">'+f[1]+'</label><input id="f_'+f[0]+'" value="'+esc(cur[f[0]])+'" placeholder="'+esc(f[2])+'" autocomplete="off">'});
+  $("fields").innerHTML=h;$("cfs").innerHTML="";(cur.x||[]).forEach(addRow);
+  $("fields").oninput=upd;$("cfs").oninput=upd;$("addf").onclick=function(){addRow(["","",""])}}
+function buildDoc(o){var js=JSON.stringify(o).replace(/</g,"\\u003c");
+  return '<!DOCTYPE html>\n<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Электронная визитка</title><meta name="robots" content="noindex"><script src="'+QR+'"><\/script><style id="css">'+$("css").textContent+'</style></head><body><div id="root"></div><script type="application/json" id="data">'+js+'<\/script><script id="app">'+$("app").textContent+'<\/script></body></html>'}
+function dl(){var st=$("st");
+  try{dlFile("index.html","text/html;charset=utf-8",buildDoc(collect()));st.textContent="Файл index.html скачан. Загрузите его на хостинг."}
+  catch(e){st.textContent="Не удалось скачать файл."}}
+$("root").innerHTML=SHELL;
+cur=JSON.parse($("data").textContent);
+function showForm(){$("bar").style.display="none";$("editor").style.display="block";buildForm();render(cur)}
+function showCard(own){$("editor").style.display="none";$("bar").style.display=own?"block":"none";render(cur)}
+$("eb").onclick=showForm;$("cancel").onclick=function(){showCard(true)};$("pub").onclick=dl;
+function go(){if(location.hash.slice(1)==="edit")showForm();else showCard(false)}
+window.addEventListener("hashchange",go);go();
+</script></body></html>
