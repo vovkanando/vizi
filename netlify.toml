@@ -6,3 +6,8 @@
   from = "/vcard.vcf"
   to = "/.netlify/functions/vcard"
   status = 200
+
+[[redirects]]
+  from = "/c/*"
+  to = "/card.html"
+  status = 200
