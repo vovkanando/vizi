@@ -83,3 +83,34 @@ input:focus-visible,button:focus-visible,select:focus-visible,a:focus-visible{ou
 .pre span{padding:11px 0 11px 12px;border:1px solid var(--line);border-right:0;border-radius:10px 0 0 10px;background:var(--field);color:var(--mute);white-space:nowrap;font-size:14px}
 .pre input{border-radius:0 10px 10px 0}
 .two{display:flex;gap:8px;margin-top:12px}
+
+/* ===== Фон по образцу и стеклянное оформление ===== */
+:root:root:root{--bg:#03050d;--panel:rgba(255,255,255,.1);--ink:#fff;--mute:rgba(214,228,255,.68);--line:rgba(255,255,255,.26);--field:rgba(255,255,255,.1)}
+html{background:#03050d}
+body{background:transparent;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:#03050d url(/bg.jpg) center/cover no-repeat}
+@media (orientation:portrait){body::before{background-image:url(/bg-m.jpg)}}
+::placeholder{color:rgba(255,255,255,.42)}
+.panel{-webkit-backdrop-filter:blur(26px) saturate(150%);backdrop-filter:blur(26px) saturate(150%);border:1px solid rgba(255,255,255,.22);box-shadow:0 18px 50px rgba(0,5,30,.45),inset 0 1px 0 rgba(255,255,255,.25)}
+.btn{background:rgba(255,255,255,.92);color:#0a2a7a}
+.btn.blue{background:linear-gradient(135deg,#4a8bff,#1448c9);color:#fff;border:1px solid rgba(255,255,255,.3)}
+.btn.ghost{background:rgba(255,255,255,.08);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.msg.err{color:#ff9a9a}.msg.ok{color:#8ff0b8}
+.out{color:#fff}
+.mbox .btn{background:#000;color:#fff;border:0}
+.mbox .btn.blue{background:var(--blue)}
+.card{background:rgba(255,255,255,.1);-webkit-backdrop-filter:blur(30px) saturate(170%);backdrop-filter:blur(30px) saturate(170%);border:1px solid rgba(255,255,255,.28);box-shadow:0 24px 70px rgba(2,10,40,.55),inset 0 1px 0 rgba(255,255,255,.4);color:#fff;border-radius:34px}
+.top{background:linear-gradient(135deg,rgba(255,255,255,.2),rgba(255,255,255,.03))}
+.bar select{background:rgba(255,255,255,.16);color:#fff;border:1px solid rgba(255,255,255,.32);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px)}
+.bar select option{color:#0a1f5c}
+.ava{background:linear-gradient(145deg,#fff,#a9c6ff);color:#0a1f5c;box-shadow:0 10px 30px rgba(10,40,140,.45),inset 0 2px 0 #fff}
+.card .btn{background:rgba(255,255,255,.92);color:#0a2a7a;box-shadow:0 6px 20px rgba(3,14,50,.35)}
+.card .btn.blue{background:linear-gradient(135deg,#4a8bff,#1448c9);color:#fff;border:1px solid rgba(255,255,255,.35)}
+.card .qrb{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.soc a{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.32);color:#fff;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+.body{background:rgba(3,8,30,.32)}
+.body h3{color:#fff}
+.f small{color:rgba(214,228,255,.62)}
+.f a,.f span{color:#fff}
+.f a{text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:3px}
+.web{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.4);color:#fff;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
