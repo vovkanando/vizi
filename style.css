@@ -114,3 +114,12 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:#03050d url
 .f a,.f span{color:#fff}
 .f a{text-decoration:underline;text-decoration-color:rgba(255,255,255,.35);text-underline-offset:3px}
 .web{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.4);color:#fff}
+
+/* ===== Фото, Instagram ===== */
+.ava{overflow:hidden}
+.ava img{width:100%;height:100%;object-fit:cover;display:block}
+.dot.ig{border-radius:5px;background:linear-gradient(45deg,#f9ce34,#ee2a7b,#6228d7)}
+.phr{display:flex;align-items:center;gap:10px;margin-top:6px;flex-wrap:wrap}
+.phv{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;overflow:hidden;font-size:12px;color:var(--mute);flex:none}
+.phv img{width:100%;height:100%;object-fit:cover;display:block}
+.phr .btn{width:auto;padding:10px 14px}
