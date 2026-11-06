@@ -123,3 +123,12 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:#03050d url
 .phv{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);display:grid;place-items:center;overflow:hidden;font-size:12px;color:var(--mute);flex:none}
 .phv img{width:100%;height:100%;object-fit:cover;display:block}
 .phr .btn{width:auto;padding:10px 14px}
+
+/* ===== Иконки ===== */
+.ic{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,rgba(255,255,255,.28),rgba(255,255,255,.08));border:1px solid rgba(255,255,255,.35);display:grid;place-items:center;flex:none;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.5),0 6px 16px rgba(3,10,35,.25)}
+.ic svg{width:20px;height:20px}
+.f{display:flex;align-items:center;gap:12px}
+.f>div{min-width:0}
+.soc a .ic{width:30px;height:30px;border-radius:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
+.soc a .ic svg{width:17px;height:17px}
+.btn svg.s{width:20px;height:20px;flex:none}
