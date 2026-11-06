@@ -25,20 +25,32 @@ function vinfo(d,slug){var ua=navigator.userAgent,e=encodeURIComponent,ios=/iP(h
     return{h:"intent:#Intent;action=android.intent.action.INSERT;type=vnd.android.cursor.dir/contact;S.name="+e(d.n||"")+";S.phone="+e(ph[0]||"")+(ph[1]?";S.secondary_phone="+e(ph[1]):"")+";S.email="+e((d.we||"").trim())+";S.company="+e(d.c||"")+";S.job_title="+e(d.t||"")+";end",a:""}}
   if(ios){var q={n:d.n,p:d.p,c:d.c,t:d.t,wp:d.wp,we:d.we,w:d.w,tg:d.tg,ig:d.ig,x:d.x};return{h:slug?"/vcard.vcf?s="+e(slug):"/vcard.vcf?d="+b64u(JSON.stringify(q)),a:""}}
   return{h:"data:text/vcard;charset=utf-8,"+e(vcf(d)),a:' download="'+esc((d.n||"contact").replace(/[^\w\u0400-\u04FF-]+/g,"_"))+'.vcf"'}}
+var P={
+telegram:'<path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/>',
+instagram:'<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><path d="M17.5 6.5h.01"/>',
+phone:'<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+mail:'<path d="M4 4h16a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M22 6l-10 7L2 6"/>',
+building:'<rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 22v-4h6v4M8 6h.01M12 6h.01M16 6h.01M8 10h.01M12 10h.01M16 10h.01M8 14h.01M12 14h.01M16 14h.01"/>',
+briefcase:'<rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/>',
+link:'<path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>',
+useradd:'<path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="8.5" cy="7" r="4"/><path d="M20 8v6M23 11h-6"/>'};
+function sv(n,c){return'<svg class="'+(c||"")+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+P[n]+'</svg>'}
+function ic(n){return'<span class="ic">'+sv(n)+'</span>'}
+function pick(l,k){var t=(l||"")+" "+(k||"");if(/insta/i.test(t))return"instagram";if(/telegram|t\.me|телеграм/i.test(t))return"telegram";if(/^mailto:|@[\w-]+\.\w/.test(k||""))return"mail";if(/^tel:/.test(k||"")||/тел|phone|whats|viber/i.test(l||""))return"phone";return"link"}
 function renderCard(d,slug,el){
   var t=T[lang],h="",vi=vinfo(d,slug),pl=slug?location.origin+"/c/"+slug:location.href;
   var tg=url(d.tg,"https://t.me/"),ig=url(d.ig,"https://instagram.com/"),web=url(d.w,"https://"),ol=url(d.ol,"https://");
-  function fld(l,v,href){return v?'<div class="f"><small>'+esc(l)+'</small>'+(href?'<a href="'+esc(href)+'"'+bl(href)+'>'+esc(v)+'</a>':'<span>'+esc(v)+'</span>')+'</div>':""}
+  function fld(l,v,href,icon){return v?'<div class="f">'+(icon?ic(icon):"")+'<div><small>'+esc(l)+'</small>'+(href?'<a href="'+esc(href)+'"'+bl(href)+'>'+esc(v)+'</a>':'<span>'+esc(v)+'</span>')+'</div></div>':""}
   var ini=(d.n||"?").trim().charAt(0).toUpperCase();
   h+='<div class="top"><div class="bar"><select id="lg" aria-label="Language"><option value="ru">RU</option><option value="en">EN</option></select></div>';
   h+='<div class="who"><div class="ava">'+(okPh(d.ph)?'<img alt="" src="'+esc(d.ph)+'">':esc(ini))+'</div><b>'+esc(d.n)+'</b></div>';
-  h+='<div class="cb"><a class="btn" id="sv" style="display:grid;place-items:center;text-decoration:none" href="'+esc(vi.h)+'"'+vi.a+'>'+t.sv+'</a><button class="btn qrb" id="qb" aria-label="QR"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v7M14 20h3"/></svg></button></div>';
+  h+='<div class="cb"><a class="btn" id="sv" style="display:flex;align-items:center;justify-content:center;gap:8px;text-decoration:none" href="'+esc(vi.h)+'"'+vi.a+'>'+sv("useradd","s")+t.sv+'</a><button class="btn qrb" id="qb" aria-label="QR"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><path d="M14 14h3v3h-3zM20 14v7M14 20h3"/></svg></button></div>';
   if(ol)h+='<div class="cb"><a class="btn blue" style="display:grid;place-items:center;text-decoration:none;height:56px" href="'+esc(ol)+'"'+bl(ol)+'>'+esc(d.ob||"Подробнее")+'</a></div>';
-  if(tg||ig){h+='<div class="soc">';if(tg)h+='<a href="'+esc(tg)+'"'+bl(tg)+'><i class="dot"></i>Telegram</a>';if(ig)h+='<a href="'+esc(ig)+'"'+bl(ig)+'><i class="dot ig"></i>Instagram</a>';h+='</div>'}
+  if(tg||ig){h+='<div class="soc">';if(tg)h+='<a href="'+esc(tg)+'"'+bl(tg)+'>'+ic("telegram")+'Telegram</a>';if(ig)h+='<a href="'+esc(ig)+'"'+bl(ig)+'>'+ic("instagram")+'Instagram</a>';h+='</div>'}
   h+='</div><div class="body">';
-  if(d.p)h+='<h3>'+t.c+'</h3>'+fld(t.p,d.p,"tel:"+d.p.replace(/[^+\d]/g,""));
-  if(d.c||d.t||d.wp||d.we)h+='<h3>'+t.wc+'</h3>'+fld(t.co,d.c)+fld(t.ti,d.t)+fld(t.wp,d.wp,d.wp?"tel:"+d.wp.replace(/[^+\d]/g,""):"")+fld(t.we,d.we,d.we?"mailto:"+d.we:"");
-  if(d.x&&d.x.length){h+='<h3>'+t.ex+'</h3>';d.x.forEach(function(r){var l=r[2]||"",hr=l?(/^(https?:|tel:|mailto:)/i.test(l)?l:(/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(l)?"mailto:"+l:"https://"+l)):"";h+=fld(r[0],r[1]||l,hr)})}
+  if(d.p)h+='<h3>'+t.c+'</h3>'+fld(t.p,d.p,"tel:"+d.p.replace(/[^+\d]/g,""),"phone");
+  if(d.c||d.t||d.wp||d.we)h+='<h3>'+t.wc+'</h3>'+fld(t.co,d.c,"","building")+fld(t.ti,d.t,"","briefcase")+fld(t.wp,d.wp,d.wp?"tel:"+d.wp.replace(/[^+\d]/g,""):"","phone")+fld(t.we,d.we,d.we?"mailto:"+d.we:"","mail");
+  if(d.x&&d.x.length){h+='<h3>'+t.ex+'</h3>';d.x.forEach(function(r){var l=r[2]||"",hr=l?(/^(https?:|tel:|mailto:)/i.test(l)?l:(/^[\w.+-]+@[\w-]+\.[\w.]+$/.test(l)?"mailto:"+l:"https://"+l)):"";h+=fld(r[0],r[1]||l,hr,pick(r[0],hr||l))})}
   if(web)h+='<a class="web" href="'+esc(web)+'"'+bl(web)+'><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.6"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2c3 3 3 17 0 20M12 2c-3 3-3 17 0 20"/></svg>'+esc(web.replace(/^https?:\/\//,"").replace(/\/$/,""))+'</a><br>';
   h+='<button class="btn share" id="sh">'+t.sh+'</button></div>';
   el.innerHTML=h;var lg=el.querySelector("#lg");lg.value=lang;
