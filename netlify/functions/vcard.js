@@ -10,6 +10,17 @@ const link = (v, pre) => {
   return /^https?:\/\//i.test(v) ? v : pre + v.replace(/^@/, "");
 };
 
+// Складывает длинные строки vCard (не более 75 символов в строке)
+function fold(l) {
+  let out = l.slice(0, 75);
+  l = l.slice(75);
+  while (l.length) {
+    out += "\r\n " + l.slice(0, 74);
+    l = l.slice(74);
+  }
+  return out;
+}
+
 async function load(q) {
   if (q.s) {
     if (!/^[a-z0-9-]{3,32}$/.test(q.s)) throw new Error("bad slug");
@@ -37,12 +48,15 @@ exports.handler = async (event) => {
     if (clean(o.we)) L.push("EMAIL;TYPE=WORK:" + clean(o.we));
     if (clean(o.c)) L.push("ORG:" + esc(o.c));
     if (clean(o.t)) L.push("TITLE:" + esc(o.t));
-    const urls = [link(o.w, "https://"), link(o.tg, "https://t.me/")];
+    const urls = [link(o.w, "https://"), link(o.tg, "https://t.me/"), link(o.ig, "https://instagram.com/")];
     (Array.isArray(o.x) ? o.x.slice(0, 20) : []).forEach((r) => {
       const l = clean(r && r[2]);
       if (/^https?:\/\//i.test(l) || /^[\w-]+(\.[\w-]+)+\//.test(l)) urls.push(link(l, "https://"));
     });
     urls.filter(Boolean).forEach((u) => L.push("URL:" + u));
+    if (typeof o.ph === "string" && o.ph.length < 300000 && /^data:image\/jpeg;base64,[A-Za-z0-9+/=]+$/.test(o.ph)) {
+      L.push(fold("PHOTO;ENCODING=b;TYPE=JPEG:" + o.ph.split(",")[1]));
+    }
     L.push("END:VCARD");
     return {
       statusCode: 200,
