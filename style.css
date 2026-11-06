@@ -132,3 +132,6 @@ body::before{content:"";position:fixed;inset:0;z-index:-1;background:#03050d url
 .soc a .ic{width:30px;height:30px;border-radius:10px;box-shadow:inset 0 1px 0 rgba(255,255,255,.4)}
 .soc a .ic svg{width:17px;height:17px}
 .btn svg.s{width:20px;height:20px;flex:none}
+
+/* ===== Подсветка обязательного поля ===== */
+input.bad{border-color:#ff9a9a;box-shadow:0 0 0 3px rgba(255,120,120,.28)}
