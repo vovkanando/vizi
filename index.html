@@ -19,7 +19,6 @@
   </div>
   <ul class="feat">
     <li><b>Своя ссылка</b>Адрес вида сайт/c/ваше-имя для NFC и QR</li>
-    <li><b>Кнопки работают</b>Звонок, письмо, Telegram, VK и свои ссылки</li>
     <li><b>Сохранить в контакты</b>Данные сразу попадают в карточку контакта на iPhone и Android</li>
   </ul>
   <div class="panel" id="auth">
@@ -42,6 +41,7 @@
     <h2>Данные визитки</h2>
     <label for="slug">Адрес визитки (латиница, цифры, дефис, 3–32 символа)</label>
     <div class="pre"><span id="pfx"></span><input id="slug" placeholder="ivan-petrov" autocomplete="off"></div>
+    <label>Фото</label><div class="phr"><div class="phv" id="phv"></div><button class="btn ghost" id="phb" type="button">Выбрать фото</button><button class="btn ghost" id="phd" type="button" hidden>Удалить</button></div><input type="file" id="phf" accept="image/*" hidden>
     <div id="fields"></div>
     <h2 style="margin-top:22px;font-size:16px">Свои поля и ссылки</h2>
     <div id="cfs"></div>
@@ -56,8 +56,8 @@
 <script src="/shared.js"></script>
 <script>
 var sb=supabase.createClient(CFG.SB,CFG.KEY);
-var F=[["n","Имя и фамилия","Иван Петров"],["p","Телефон","+375 44 000-00-00"],["c","Компания","Название компании"],["t","Должность","Директор"],["wp","Рабочий телефон","+375 17 000-00-00"],["we","Рабочая почта","mail@example.com"],["w","Сайт","https://example.com"],["tg","Telegram (@ник)","@nick"],["vk","VK (ссылка или id)","id1"],["ol","Ссылка для дополнительной кнопки","https://example.com/order"],["ob","Текст дополнительной кнопки","Заказать"]];
-var user=null,slug="",cur={},mode="in";
+var F=[["n","Имя и фамилия","Иван Петров"],["p","Телефон","+375 44 000-00-00"],["c","Компания","Название компании"],["t","Должность","Директор"],["wp","Рабочий телефон","+375 17 000-00-00"],["we","Рабочая почта","mail@example.com"],["w","Сайт","https://example.com"],["tg","Telegram (@username)","@username"],["ig","Instagram (@username или ссылка)","@username"],["ol","Ссылка для дополнительной кнопки","https://example.com/order"],["ob","Текст дополнительной кнопки","Добавить"]];
+var user=null,slug="",cur={},mode="in",photo="";
 function view(v){$("v-land").hidden=v!=="land";$("v-dash").hidden=v!=="dash";$("out").hidden=v!=="dash"}
 function msg(id,t,ok){var e=$(id);e.textContent=t||"";e.className="msg"+(t?(ok?" ok":" err"):"")}
 function human(e){var m=(e&&e.message)||"";
@@ -75,7 +75,7 @@ $("go").onclick=async function(){var em=$("em").value.trim(),pw=$("pw").value;ms
   if(r.error){msg("am",human(r.error));return}
   if(mode==="up"&&!r.data.session)msg("am","Аккаунт создан. Подтвердите почту по ссылке из письма и войдите.",true)};
 $("out").onclick=function(){sb.auth.signOut()};
-function collect(){var o={};F.forEach(function(f){o[f[0]]=$("f_"+f[0]).value.trim()});if(!o.n)o.n="Без имени";o.x=[];
+function collect(){var o={};F.forEach(function(f){o[f[0]]=$("f_"+f[0]).value.trim()});if(!o.n)o.n="Без имени";if(photo)o.ph=photo;o.x=[];
   document.querySelectorAll(".cf").forEach(function(e){var i=e.querySelectorAll("input"),a=i[0].value.trim(),b=i[1].value.trim(),c=i[2].value.trim();if(a||b||c)o.x.push([a,b,c])});return o}
 function upd(){renderCard(collect(),"",$("card"))}
 function addRow(r){var d=document.createElement("div");d.className="cf";
@@ -87,10 +87,11 @@ function buildForm(){var h="";
   $("fields").innerHTML=h;$("cfs").innerHTML="";(cur.x||[]).forEach(addRow);
   $("pfx").textContent=location.host+"/c/";$("slug").value=slug;
   $("fields").oninput=upd;$("cfs").oninput=upd;$("addf").onclick=function(){addRow(["","",""])};
-  linkPanel();upd()}
+  phView();linkPanel();upd()}
 async function loadCard(){msg("sm","");
   var r=await sb.from("cards").select("slug,data").eq("user_id",user.id).maybeSingle();
   if(r.data){slug=r.data.slug;cur=r.data.data||{}}else{slug="";cur={}}
+  photo=cur.ph||"";
   buildForm()}
 $("save").onclick=async function(){msg("sm","");
   var s=$("slug").value.trim().toLowerCase();
@@ -98,10 +99,18 @@ $("save").onclick=async function(){msg("sm","");
   var o=collect(),r=await sb.from("cards").upsert({user_id:user.id,slug:s,data:o,updated_at:new Date().toISOString()},{onConflict:"user_id"});
   if(r.error){msg("sm",r.error.code==="23505"?"Этот адрес уже занят, выберите другой.":"Не удалось сохранить: "+r.error.message);return}
   slug=s;cur=o;$("slug").value=s;linkPanel();msg("sm","Сохранено. Визитка обновлена.",true)};
+function phView(){$("phv").innerHTML=photo?'<img alt="" src="'+esc(photo)+'">':"Фото";$("phd").hidden=!photo}
+$("phb").onclick=function(){$("phf").click()};
+$("phd").onclick=function(){photo="";phView();upd();msg("sm","Фото удалено. Нажмите «Сохранить».",true)};
+$("phf").onchange=function(){var f=this.files&&this.files[0];this.value="";if(!f)return;msg("sm","");
+  var u=URL.createObjectURL(f),im=new Image();
+  im.onload=function(){var S=320,c=document.createElement("canvas");c.width=c.height=S;var m=Math.min(im.width,im.height);
+    c.getContext("2d").drawImage(im,(im.width-m)/2,(im.height-m)/2,m,m,0,0,S,S);photo=c.toDataURL("image/jpeg",0.85);URL.revokeObjectURL(u);phView();upd();msg("sm","Фото выбрано. Нажмите «Сохранить».",true)};
+  im.onerror=function(){URL.revokeObjectURL(u);msg("sm","Не удалось прочитать фото. Попробуйте другой файл (JPG или PNG).")};im.src=u};
 $("cpl").onclick=function(){copy(location.origin+"/c/"+slug,this)};
 $("qrl").onclick=function(){showQR(location.origin+"/c/"+slug)};
 async function setUser(u){if(user&&u&&user.id===u.id)return;user=u||null;
-  if(!user){slug="";cur={};view("land");return}
+  if(!user){slug="";cur={};photo="";view("land");return}
   view("dash");await loadCard()}
 (async function(){var r=await sb.auth.getSession();setUser(r.data.session&&r.data.session.user);
   sb.auth.onAuthStateChange(function(_e,s){setTimeout(function(){setUser(s&&s.user)},0)})})();
